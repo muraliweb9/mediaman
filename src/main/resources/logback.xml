@@ -1,0 +1,68 @@
+<configuration>
+   <jmxConfigurator />
+   
+   <!-- Log patterns -->
+   <property name="log.pattern"      	        value="%-30(%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread]) %-5level [%logger{0}] - %msg%n" />
+   <property name="log.pattern.msg.only"     	value="%msg%n" />
+   
+   <!-- Log file names -->
+   <property name="log.dir"     	            value="logs/" />
+   <property name="app.log.name"                value="media-man" />
+    <property name="perf.log.name"    	        value="media-man-perf" />
+   <property name="log.ext"     	            value=".log" />
+   
+   <!-- Rolling file appender policy  -->
+   <property name="fixed.window.min"     	    value="1" />
+   <property name="fixed.window.max"     	    value="5" />
+   <property name="trigger.max.size"     	    value="5MB" />
+   
+   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+         <pattern>${log.pattern}</pattern>
+      </encoder>
+   </appender>
+   
+   <appender name="APP_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${log.dir}${app.log.name}${log.ext}</file>
+      <encoder>
+         <pattern>${log.pattern}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      	 <fileNamePattern>${log.dir}${app.log.name}%i${log.ext}.zip</fileNamePattern>
+         <minIndex>${fixed.window.min}</minIndex>
+         <maxIndex>${fixed.window.max}</maxIndex>
+      </rollingPolicy>
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>${trigger.max.size}</maxFileSize>
+      </triggeringPolicy>
+   </appender>
+   
+   <appender name="PERF_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${log.dir}${perf.log.name}${log.ext}</file>
+      <encoder>
+         <pattern>${log.pattern}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      	 <fileNamePattern>${log.dir}${dbp.perf.log.name}%i${log.ext}.zip</fileNamePattern>
+         <minIndex>${fixed.window.min}</minIndex>
+         <maxIndex>${fixed.window.max}</maxIndex>
+      </rollingPolicy>
+      <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+         <maxFileSize>${trigger.max.size}</maxFileSize>
+      </triggeringPolicy>
+   	</appender>
+
+   	<logger name="org.perf4j.TimingLogger" additivity="false">
+      <level value="INFO" />
+      <!-- The order of the appenders matters. Please keep first the AsyncCoalescing, and second the standard -->
+      <!--appender-ref ref="PERF_STATS_LOG" /-->
+      <appender-ref ref="PERF_LOG" />
+   </logger>
+
+   <root>
+      <level value="DEBUG" />
+      <appender-ref ref="CONSOLE" />
+      <appender-ref ref="APP_LOG" />
+   </root>
+
+</configuration>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grouping>
+	<name>my-grouping</name>
+	<group>
+		<name>my-group-1</name>
+		<condition>
+			<tag>my-tag-1</tag>
+			<value>my-value-1</value>
+			<include>true</include>
+		</condition>
+	</group>
+	<group>
+		<name>my-group-2</name>
+		<condition>
+			<tag>my-tag-2</tag>
+			<value>my-value-2</value>
+			<include>false</include>
+		</condition>
+	</group>
+</grouping>
